@@ -1,0 +1,16 @@
+{
+  "canisters": {
+    "token_canister": {
+      "type": "custom",
+      "candid": "wasm/ledger.did",
+      "wasm": "wasm/ledger.wasm"
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": "",
+      "args": ""
+    }
+  },
+  "version": 1
+}
