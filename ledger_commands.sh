@@ -12,17 +12,10 @@ dfx deploy --network ${NETWORK} token_canister --mode=reinstall --argument '(var
        initial_balances = vec {                                
             record {                                            
                 record {                                        
-                    owner = principal "'${MINTER_PRINCIPAL}'";   
-                    subaccount = null;                          
-                };                                              
-                2_000_000_000_000_000                                 
-            };
-            record {                                            
-                record {                                        
                     owner = principal "jnulu-4u5bv-wsjr2-utlhe-bqkgh-w27eb-zyzvh-xqwfp-ibleo-nvh57-gae";   
                     subaccount = null;                          
                 };                                              
-                100_000_000_000_000                                 
+                2_100_000_000_000_000                                 
             }                                                    
         };  
         metadata = vec {
