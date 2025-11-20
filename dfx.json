@@ -4,6 +4,11 @@
       "type": "custom",
       "candid": "wasm/ledger.did",
       "wasm": "wasm/ledger.wasm"
+    },
+    "icrc1_index_canister": {
+      "type": "custom",
+      "candid": "wasm/index.did",
+      "wasm": "wasm/index.wasm"
     }
   },
   "defaults": {
