@@ -4,96 +4,112 @@ import type { IDL } from '@dfinity/candid';
 
 export interface Account {
   'owner' : Principal,
-  'subaccount' : [] | [Uint8Array | number[]],
+  'subaccount' : [] | [SubAccount],
 }
-export interface GetAccountIdentifierTransactionsArgs {
-  'max_results' : bigint,
-  'start' : [] | [bigint],
-  'account_identifier' : string,
+export interface Approve {
+  'fee' : [] | [Tokens],
+  'from' : Account,
+  'memo' : [] | [Uint8Array | number[]],
+  'created_at_time' : [] | [bigint],
+  'amount' : Tokens,
+  'expected_allowance' : [] | [Tokens],
+  'expires_at' : [] | [bigint],
+  'spender' : Account,
 }
-export interface GetAccountIdentifierTransactionsError { 'message' : string }
-export interface GetAccountIdentifierTransactionsResponse {
-  'balance' : bigint,
-  'transactions' : Array<TransactionWithId>,
-  'oldest_tx_id' : [] | [bigint],
+export type Block = Value;
+export type BlockIndex = bigint;
+export interface Burn {
+  'fee' : [] | [bigint],
+  'from' : Account,
+  'memo' : [] | [Uint8Array | number[]],
+  'created_at_time' : [] | [bigint],
+  'amount' : Tokens,
+  'spender' : [] | [Account],
 }
-export type GetAccountIdentifierTransactionsResult = {
-    'Ok' : GetAccountIdentifierTransactionsResponse
-  } |
-  { 'Err' : GetAccountIdentifierTransactionsError };
+export interface FeeCollectorRanges {
+  'ranges' : Array<[Account, Array<[BlockIndex, BlockIndex]>]>,
+}
 export interface GetAccountTransactionsArgs {
   'max_results' : bigint,
-  'start' : [] | [bigint],
+  'start' : [] | [BlockIndex],
   'account' : Account,
 }
 export interface GetBlocksRequest { 'start' : bigint, 'length' : bigint }
 export interface GetBlocksResponse {
-  'blocks' : Array<Uint8Array | number[]>,
+  'blocks' : Array<Block>,
   'chain_length' : bigint,
 }
-export interface HttpRequest {
-  'url' : string,
-  'method' : string,
-  'body' : Uint8Array | number[],
-  'headers' : Array<[string, string]>,
+export interface GetTransactions {
+  'balance' : Tokens,
+  'transactions' : Array<TransactionWithId>,
+  'oldest_tx_id' : [] | [BlockIndex],
 }
-export interface HttpResponse {
-  'body' : Uint8Array | number[],
-  'headers' : Array<[string, string]>,
-  'status_code' : number,
+export interface GetTransactionsErr { 'message' : string }
+export type GetTransactionsResult = { 'Ok' : GetTransactions } |
+  { 'Err' : GetTransactionsErr };
+export type IndexArg = { 'Upgrade' : UpgradeArg } |
+  { 'Init' : InitArg };
+export interface InitArg {
+  'ledger_id' : Principal,
+  'retrieve_blocks_from_ledger_interval_seconds' : [] | [bigint],
 }
-export interface InitArg { 'ledger_id' : Principal }
-export type Operation = {
-    'Approve' : {
-      'fee' : Tokens,
-      'from' : string,
-      'allowance' : Tokens,
-      'expected_allowance' : [] | [Tokens],
-      'expires_at' : [] | [TimeStamp],
-      'spender' : string,
-    }
-  } |
-  {
-    'Burn' : { 'from' : string, 'amount' : Tokens, 'spender' : [] | [string] }
-  } |
-  { 'Mint' : { 'to' : string, 'amount' : Tokens } } |
-  {
-    'Transfer' : {
-      'to' : string,
-      'fee' : Tokens,
-      'from' : string,
-      'amount' : Tokens,
-      'spender' : [] | [string],
-    }
-  };
-export interface Status { 'num_blocks_synced' : bigint }
-export interface TimeStamp { 'timestamp_nanos' : bigint }
-export interface Tokens { 'e8s' : bigint }
+export interface ListSubaccountsArgs {
+  'owner' : Principal,
+  'start' : [] | [SubAccount],
+}
+export type Map = Array<[string, Value]>;
+export interface Mint {
+  'to' : Account,
+  'fee' : [] | [bigint],
+  'memo' : [] | [Uint8Array | number[]],
+  'created_at_time' : [] | [bigint],
+  'amount' : Tokens,
+}
+export interface Status { 'num_blocks_synced' : BlockIndex }
+export type SubAccount = Uint8Array | number[];
+export type Tokens = bigint;
 export interface Transaction {
-  'memo' : bigint,
-  'icrc1_memo' : [] | [Uint8Array | number[]],
-  'operation' : Operation,
-  'timestamp' : [] | [TimeStamp],
-  'created_at_time' : [] | [TimeStamp],
+  'burn' : [] | [Burn],
+  'kind' : string,
+  'mint' : [] | [Mint],
+  'approve' : [] | [Approve],
+  'timestamp' : bigint,
+  'transfer' : [] | [Transfer],
 }
 export interface TransactionWithId {
-  'id' : bigint,
+  'id' : BlockIndex,
   'transaction' : Transaction,
 }
+export interface Transfer {
+  'to' : Account,
+  'fee' : [] | [Tokens],
+  'from' : Account,
+  'memo' : [] | [Uint8Array | number[]],
+  'created_at_time' : [] | [bigint],
+  'amount' : Tokens,
+  'spender' : [] | [Account],
+}
+export interface UpgradeArg {
+  'ledger_id' : [] | [Principal],
+  'retrieve_blocks_from_ledger_interval_seconds' : [] | [bigint],
+}
+export type Value = { 'Int' : bigint } |
+  { 'Map' : Map } |
+  { 'Nat' : bigint } |
+  { 'Nat64' : bigint } |
+  { 'Blob' : Uint8Array | number[] } |
+  { 'Text' : string } |
+  { 'Array' : Array<Value> };
 export interface _SERVICE {
-  'get_account_identifier_balance' : ActorMethod<[string], bigint>,
-  'get_account_identifier_transactions' : ActorMethod<
-    [GetAccountIdentifierTransactionsArgs],
-    GetAccountIdentifierTransactionsResult
-  >,
   'get_account_transactions' : ActorMethod<
     [GetAccountTransactionsArgs],
-    GetAccountIdentifierTransactionsResult
+    GetTransactionsResult
   >,
   'get_blocks' : ActorMethod<[GetBlocksRequest], GetBlocksResponse>,
-  'http_request' : ActorMethod<[HttpRequest], HttpResponse>,
-  'icrc1_balance_of' : ActorMethod<[Account], bigint>,
+  'get_fee_collectors_ranges' : ActorMethod<[], FeeCollectorRanges>,
+  'icrc1_balance_of' : ActorMethod<[Account], Tokens>,
   'ledger_id' : ActorMethod<[], Principal>,
+  'list_subaccounts' : ActorMethod<[ListSubaccountsArgs], Array<SubAccount>>,
   'status' : ActorMethod<[], Status>,
 }
 export declare const idlFactory: IDL.InterfaceFactory;

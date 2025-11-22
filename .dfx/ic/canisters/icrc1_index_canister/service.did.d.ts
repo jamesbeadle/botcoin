@@ -19,7 +19,6 @@ export interface Approve {
 export type Block = Value;
 export type BlockIndex = bigint;
 export interface Burn {
-  'fee' : [] | [bigint],
   'from' : Account,
   'memo' : [] | [Uint8Array | number[]],
   'created_at_time' : [] | [bigint],
@@ -60,7 +59,6 @@ export interface ListSubaccountsArgs {
 export type Map = Array<[string, Value]>;
 export interface Mint {
   'to' : Account,
-  'fee' : [] | [bigint],
   'memo' : [] | [Uint8Array | number[]],
   'created_at_time' : [] | [bigint],
   'amount' : Tokens,

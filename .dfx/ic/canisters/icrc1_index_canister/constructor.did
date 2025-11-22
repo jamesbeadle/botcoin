@@ -12,7 +12,6 @@ type Approve = record {
 type Block = Value;
 type BlockIndex = nat;
 type Burn = record {
-  fee : opt nat;
   from : Account;
   memo : opt blob;
   created_at_time : opt nat64;
@@ -48,7 +47,6 @@ type ListSubaccountsArgs = record { owner : principal; start : opt SubAccount };
 type Map = vec record { text; Value };
 type Mint = record {
   to : Account;
-  fee : opt nat;
   memo : opt blob;
   created_at_time : opt nat64;
   amount : Tokens;
