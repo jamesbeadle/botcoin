@@ -1,0 +1,7 @@
+dfx canister install --mode upgrade --argument '(
+  variant {
+    Upgrade = opt record {
+      index_principal = opt principal "74ey5-qqaaa-aaaal-qsw4q-cai";
+    }
+  }
+)' token_canister --ic --upgrade-unchanged
